@@ -10,7 +10,7 @@
 
 This repository implements the Gutzwiller mean-field approximation to solve for the quantum phase transition in the Bose-Hubbard Model. The Bose-Hubbard model describes bosonic particles on a lattice and exhibits a quantum phase transition between Mott insulator and superfluid phases as the ratio of hopping strength to interaction strength is varied.
 
-<!-- ![Bose-Hubbard Phase Diagram](assets/phase_diagram.png) -->
+![Bose-Hubbard Phase Diagram](assets/phase_diagram.png)
 
 ## Features
 
