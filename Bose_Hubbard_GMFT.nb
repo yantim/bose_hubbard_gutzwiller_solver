@@ -1,0 +1,257 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      8486,        249]
+NotebookOptionsPosition[      8130,        235]
+NotebookOutlinePosition[      8528,        251]
+CellTagsIndexPosition[      8485,        248]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], "\[IndentingNewLine]", 
+  "\n", 
+  RowBox[{"(*", "Parameters", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"z", "=", "6"}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "coordination", " ", "number", " ", "for", " ", "3", "D", " ", "cubic", " ",
+     "lattice"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"maxOccupation", "=", "5"}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"maximum", " ", "bosons", " ", "per", " ", "site"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"muRange", "=", 
+   RowBox[{"Range", "[", 
+    RowBox[{"0", ",", "3", ",", "0.05"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"tURange", "=", 
+    RowBox[{"Range", "[", 
+     RowBox[{"0", ",", "0.2", ",", "0.005"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Local", " ", "Hamiltonian", " ", "matrix"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"localHamiltonian", "[", 
+     RowBox[{"mu_", ",", "tU_", ",", "psi_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "dim", ",", "a", ",", "adag", ",", "n", ",", "H0", ",", "Hpsi"}], 
+       "}"}], ",", 
+      RowBox[{
+       RowBox[{"dim", "=", 
+        RowBox[{"maxOccupation", "+", "1"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"a", "=", 
+        RowBox[{"SparseArray", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Band", "[", 
+            RowBox[{"{", 
+             RowBox[{"2", ",", "1"}], "}"}], "]"}], "->", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"Sqrt", "[", "i", "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", 
+               RowBox[{"dim", "-", "1"}]}], "}"}]}], "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"dim", ",", "dim"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"adag", "=", 
+        RowBox[{"Transpose", "[", "a", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"n", "=", 
+        RowBox[{"DiagonalMatrix", "[", 
+         RowBox[{"Range", "[", 
+          RowBox[{"0", ",", "maxOccupation"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"H0", "=", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "/", "2"}], ")"}], " ", 
+         RowBox[{"DiagonalMatrix", "[", 
+          RowBox[{
+           RowBox[{"Range", "[", 
+            RowBox[{"0", ",", "maxOccupation"}], "]"}], " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"Range", "[", 
+              RowBox[{"0", ",", "maxOccupation"}], "]"}], "-", "1"}], ")"}]}],
+           "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Hpsi", "=", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", "z"}], " ", "tU", " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"psi", " ", "adag"}], "+", 
+            RowBox[{
+             RowBox[{"Conjugate", "[", "psi", "]"}], " ", "a"}]}], ")"}]}], "+", 
+         RowBox[{"z", " ", "tU", " ", 
+          RowBox[{
+           RowBox[{"Abs", "[", "psi", "]"}], "^", "2"}], " ", 
+          RowBox[{"IdentityMatrix", "[", "dim", "]"}]}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"H0", "-", 
+        RowBox[{"mu", " ", "n"}], "+", "Hpsi"}]}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Minimize", " ", "energy", " ", "wrt", " ", "psi"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"findGroundStatePsi", "[", 
+     RowBox[{"mu_", ",", "tU_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"energy", ",", "psi", ",", "gsEnergy"}], "}"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"energy", "[", 
+         RowBox[{"psi_", "?", "NumericQ"}], "]"}], ":=", 
+        RowBox[{"Module", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"H", ",", "evals"}], "}"}], ",", 
+          RowBox[{
+           RowBox[{"H", "=", 
+            RowBox[{"localHamiltonian", "[", 
+             RowBox[{"mu", ",", "tU", ",", "psi"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"evals", "=", 
+            RowBox[{"Eigenvalues", "[", 
+             RowBox[{
+              RowBox[{"N", "[", "H", "]"}], ",", "1"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"First", "[", "evals", "]"}]}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"psi", "/.", " ", 
+        RowBox[{
+         RowBox[{"NMinimize", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"energy", "[", "psi", "]"}], ",", 
+             RowBox[{
+              RowBox[{"-", "1"}], "<=", "psi", "<=", "1"}]}], "}"}], ",", 
+           "psi"}], "]"}], "[", 
+         RowBox[{"[", "2", "]"}], "]"}]}]}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Determine", " ", "whether", " ", "superfluid", " ", "order", " ", 
+    "parameter", " ", "is", " ", "zero"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"computePhase", "[", 
+     RowBox[{"mu_", ",", "tU_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "psi", "}"}], ",", 
+      RowBox[{
+       RowBox[{"psi", "=", 
+        RowBox[{"findGroundStatePsi", "[", 
+         RowBox[{"mu", ",", "tU"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Abs", "[", "psi", "]"}], "<", 
+          RowBox[{"10", "^", 
+           RowBox[{"-", "4"}]}]}], ",", "0", ",", "1"}], "]"}]}]}], " ", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"0", "=", 
+        RowBox[{"Mott", " ", "insulator"}]}], ",", 
+       RowBox[{"1", "=", "superfluid"}]}], "*)"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Generate", " ", "phase", " ", "diagram"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"phaseDiagram", "=", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"computePhase", "[", 
+       RowBox[{"mu", ",", "tU"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"mu", ",", "muRange"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"tU", ",", "tURange"}], "}"}]}], "]"}]}], ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{"ListDensityPlot", "[", 
+  RowBox[{
+   RowBox[{"Transpose", "[", "phaseDiagram", "]"}], ",", 
+   RowBox[{"DataRange", "->", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"0", ",", "3"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.2"}], "}"}]}], "}"}]}], ",", 
+   RowBox[{"ColorFunction", "->", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"Blend", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"0", ",", "White"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"1", ",", "Blue"}], "}"}]}], "}"}], ",", "#"}], "]"}], 
+      "&"}], ")"}]}], ",", 
+   RowBox[{"FrameLabel", "->", 
+    RowBox[{"{", 
+     RowBox[{"\"\<Chemical Potential \[Mu]/U\>\"", 
+      ",", "\"\<Hopping t/U\>\""}], "}"}]}], ",", 
+   RowBox[{
+   "PlotLabel", "->", "\"\<Mean-field Bose-Hubbard Phase Diagram\>\""}], ",", 
+   
+   RowBox[{"InterpolationOrder", "->", "0"}], ",", 
+   RowBox[{"ImageSize", "->", "Large"}]}], "]"}], "\n"}], "Input",
+ CellChangeTimes->{{3.956751614321165*^9, 3.9567516143238153`*^9}},
+ CellLabel->
+  "In[209]:=",ExpressionUUID->"d7146552-5bb4-468c-bf90-831526721b5d"]
+},
+WindowSize->{808, 741},
+WindowMargins->{{236, Automatic}, {Automatic, 24}},
+FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (December 26, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"49565e19-02be-40a5-b317-e8d4c3a9d347"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 7572, 213, 805, "Input",ExpressionUUID->"d7146552-5bb4-468c-bf90-831526721b5d"]
+}
+]
+*)
+
